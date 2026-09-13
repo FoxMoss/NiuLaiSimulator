@@ -1,0 +1,72 @@
+[gd_scene format=4 uid="uid://cnxmiltdbrk7t"]
+
+[ext_resource type="PackedScene" uid="uid://dhcutiq7f7vjb" path="res://scenes/bubble.tscn" id="1_akcf6"]
+[ext_resource type="Texture2D" uid="uid://3gxkqcl6suev" path="res://assets/Wii - Flower Works - Environment - Background Tiles.png" id="1_g23no"]
+[ext_resource type="PackedScene" uid="uid://boj8qqx4cs0fv" path="res://scenes/player.tscn" id="2_akcf6"]
+[ext_resource type="Texture2D" uid="uid://cfp7ytdpix06d" path="res://assets/bowlingpin.png" id="4_2t04r"]
+[ext_resource type="Script" uid="uid://ddc0pxn0l4x38" path="res://scenes/pin.gd" id="4_fq6qg"]
+[ext_resource type="Texture2D" uid="uid://bo4e4s58aqakc" path="res://assets/youwin.png" id="4_jnq1l"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fq6qg"]
+texture = ExtResource("1_g23no")
+margins = Vector2i(1, 1)
+separation = Vector2i(5, 5)
+texture_region_size = Vector2i(64, 64)
+5:8/0 = 0
+5:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+6:8/0 = 0
+6:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+7:8/0 = 0
+7:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+
+[sub_resource type="TileSet" id="TileSet_hkcvl"]
+tile_size = Vector2i(64, 64)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_fq6qg")
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hkcvl"]
+radius = 15.0
+height = 128.0
+
+[node name="Level" type="Node2D" unique_id=102479393]
+
+[node name="Bubble" parent="." unique_id=2030179206 instance=ExtResource("1_akcf6")]
+position = Vector2(545, 205)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1528700182]
+position = Vector2(-3, -13)
+tile_map_data = PackedByteArray("AAAGAAUAAAAFAAgAAAAHAAUAAAAFAAgAAAAIAAUAAAAFAAgAAAAJAAUAAAAFAAgAAAAKAAUAAAAFAAgAAAAGAAYAAAAGAAgAAAAHAAYAAAAGAAgAAAAIAAYAAAAGAAgAAAAJAAYAAAAGAAgAAAAKAAYAAAAGAAgAAAASAAUAAAAFAAgAAAATAAUAAAAFAAgAAAAUAAUAAAAFAAgAAAAVAAUAAAAFAAgAAAASAAYAAAAGAAgAAAATAAYAAAAGAAgAAAAUAAYAAAAGAAgAAAAVAAYAAAAGAAgAAAA=")
+tile_set = SubResource("TileSet_hkcvl")
+
+[node name="Player" parent="." unique_id=1912217055 instance=ExtResource("2_akcf6")]
+position = Vector2(532, 4)
+collision_layer = 7
+collision_mask = 7
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=2047119283]
+position = Vector2(353, -65)
+zoom = Vector2(0.595, 0.595)
+
+[node name="Youwin" type="Sprite2D" parent="Player/Camera2D" unique_id=1992160503]
+visible = false
+position = Vector2(22, 332)
+scale = Vector2(0.57314813, 0.57314813)
+texture = ExtResource("4_jnq1l")
+
+[node name="Pin" type="RigidBody2D" parent="." unique_id=1147732483]
+position = Vector2(1261, 279)
+collision_layer = 5
+collision_mask = 5
+mass = 0.01
+script = ExtResource("4_fq6qg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pin" unique_id=1653532080]
+position = Vector2(0, -68)
+shape = SubResource("CapsuleShape2D_hkcvl")
+
+[node name="Bowlingpin" type="Sprite2D" parent="Pin" unique_id=857197754]
+position = Vector2(1, -68)
+scale = Vector2(2.21875, 2.21875)
+texture = ExtResource("4_2t04r")
+
+[connection signal="body_entered" from="Pin" to="Pin" method="_on_body_entered"]
